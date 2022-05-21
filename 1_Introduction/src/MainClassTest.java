@@ -14,4 +14,10 @@ public class MainClassTest {
     public void testGetClassNumber() {
         assertTrue("getClassNumber returns a number less than 45", mainClass.getClassNumber() > 45);
     }
+
+    @Test
+    public void testGetClassString() {
+        String classString = mainClass.getClassString();
+        assertTrue("getClassString returns a string without hello or Hello", classString.contains("hello") || classString.contains("Hello"));
+    }
 }
