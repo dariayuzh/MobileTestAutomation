@@ -44,10 +44,7 @@ public class FirstAndroidTest {
 
     @Test
     public void findArticlesAndCancelSearch() {
-        waitForElementAndClick(By.id("org.wikipedia:id/search_container"),
-                "Cannot find Search Wikipedia input", 5);
-        waitForElementAndSendKeys(By.xpath("//*[contains(@text, 'Search…')]"), "Summer",
-                "Cannot find search input", 5);
+        searchByWord("Summer");
 
         List<WebElement> searchResult = waitForListOfElementsPresent(By.id("org.wikipedia:id/page_list_item_container"),
                 "Cannot find articles by word Summer", 10);
@@ -62,10 +59,27 @@ public class FirstAndroidTest {
 
     }
 
+    @Test
+    public void checkSearchResults() {
+        searchByWord("Summer");
+        driver.navigate().back();
+        List<WebElement> searchResult = waitForListOfElementsPresent(By.id("org.wikipedia:id/page_list_item_title"),
+                "Cannot find articles by word Summer", 10);
+        for (WebElement element : searchResult) {
+            assertElementContainsText(element, "Summer", "Cannot find word Summer in article name = " + element.getText());
+        }
+
+    }
+
     private void assertElementHasText(By by, String expectedText, String errorMessage) {
         WebElement element = driver.findElement(by);
         String elementText = element.getText();
         Assert.assertEquals(errorMessage, expectedText, elementText);
+    }
+
+    private void assertElementContainsText(WebElement element, String expectedText, String errorMessage) {
+        String elementText = element.getText();
+        Assert.assertTrue(errorMessage, elementText.contains(expectedText));
     }
 
     private void waitForElementAndClick(By by, String errorMessage, long timeoutInSeconds) {
@@ -94,6 +108,13 @@ public class FirstAndroidTest {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
         return wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+    }
+
+    private void searchByWord(String word) {
+        waitForElementAndClick(By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input", 5);
+        waitForElementAndSendKeys(By.xpath("//*[contains(@text, 'Search…')]"), word,
+                "Cannot find search input", 5);
     }
 
 }
