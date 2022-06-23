@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 
 public class AdvancedAndroidTest {
@@ -60,6 +61,17 @@ public class AdvancedAndroidTest {
                 "Cannot find in the list article title '" + secondArticleName + "'",
                 5);
         assertArticleHasTitle(secondArticleName);
+    }
+
+    @Test
+    public void assertTitle() {
+        String articleDescription = "Major international sport event";
+        searchByWord("olympic games");
+        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='" + articleDescription + "']"),
+                "Cannot find article with description '" + articleDescription + "'",
+                5);
+        assertElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
+                "Title is not found on the page with article '" + articleDescription + "'");
     }
 
     private void searchByWord(String searchWord) {
@@ -140,6 +152,12 @@ public class AdvancedAndroidTest {
                 "Cannot find article title = '" + articleName + "'",
                 20);
         Assert.assertEquals("Expected title is " + articleName + ", in fact title is " + element.getText(), element.getText(), articleName);
+    }
+
+    private void assertElementPresent(By by, String errorMessage) {
+        List elements = driver.findElements(by);
+        String defaultMessage = "Element '" + by.toString() + "' is expected on the page.\n";
+        if (elements.size() != 1) throw new AssertionError(defaultMessage + errorMessage);
     }
 
     private WebElement waitForElementAndClick(By by, String errorMessage, long timeoutInSeconds) {
