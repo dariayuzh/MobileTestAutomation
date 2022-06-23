@@ -28,6 +28,7 @@ public class AdvancedAndroidTest {
         capabilities.setCapability("automationName", "Appium");
         capabilities.setCapability("appPackage", "org.wikipedia");
         capabilities.setCapability("appActivity", ".main.MainActivity");
+        capabilities.setCapability("orientation", "PORTRAIT");
         capabilities.setCapability("app", "D:/MyProjects/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
@@ -36,7 +37,6 @@ public class AdvancedAndroidTest {
 
     @After
     public void tearDown() {
-        driver.rotate(ScreenOrientation.PORTRAIT);
         driver.quit();
     }
 
