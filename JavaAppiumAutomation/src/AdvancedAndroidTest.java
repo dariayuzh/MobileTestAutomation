@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -35,7 +36,26 @@ public class AdvancedAndroidTest {
 
     @After
     public void tearDown() {
+        driver.rotate(ScreenOrientation.PORTRAIT);
         driver.quit();
+    }
+
+    @Test
+    public void changeScreenOrientation() {
+        String searchLine = "Java";
+        String description = "Object-oriented programming language";
+
+        searchByWord(searchLine);
+        clickArticle(description);
+
+        String titleBeforeRotation = getTitle("Cannot find article title before rotation, orientation is portrait");
+        driver.rotate(ScreenOrientation.LANDSCAPE);
+        String titleAfterRotation = getTitle("Cannot find article title after 1st rotation, orientation is landscape");
+        Assert.assertEquals("Title changed after 1st rotation!", titleAfterRotation, titleBeforeRotation);
+
+        driver.rotate(ScreenOrientation.PORTRAIT);
+        String titleAfterSecondRotation = getTitle("Cannot find article title after 2nd rotation, orientation is portrait");
+        Assert.assertEquals("Title changed after 2nd rotation!", titleAfterRotation, titleAfterSecondRotation);
     }
 
     String articlesListName = "Programming languages";
@@ -45,12 +65,12 @@ public class AdvancedAndroidTest {
     @Test
     public void saveTwoArticlesToList() {
         searchByWord("Java");
-        clickArticle("Object-oriented programming language");
+        waitArticleOpening("Object-oriented programming language");
         addArticleToList(true, articlesListName);
         closeArticle(firstArticleName);
 
         searchByWord("Python");
-        clickArticle("General-purpose programming language");
+        waitArticleOpening("General-purpose programming language");
         addArticleToList(false, articlesListName);
         closeArticle(secondArticleName);
 
@@ -67,9 +87,7 @@ public class AdvancedAndroidTest {
     public void assertTitle() {
         String articleDescription = "Major international sport event";
         searchByWord("olympic games");
-        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='" + articleDescription + "']"),
-                "Cannot find article with description '" + articleDescription + "'",
-                5);
+        clickArticle(articleDescription);
         assertElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
                 "Title is not found on the page with article '" + articleDescription + "'");
     }
@@ -81,13 +99,17 @@ public class AdvancedAndroidTest {
                 "Cannot find search input for searching by word'" + searchWord + "'", 5);
     }
 
+    private void waitArticleOpening(String text) {
+        clickArticle(text);
+        waitForElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title with description '" + text + "'",
+                15);
+    }
+
     private void clickArticle(String text) {
         waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='" + text + "']"),
                 "Cannot find article with description '" + text + "'",
                 5);
-        waitForElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot find article title with description '" + text + "'",
-                15);
     }
 
     private void addArticleToList(boolean createList, String listName) {
@@ -200,5 +222,15 @@ public class AdvancedAndroidTest {
                 .release()
                 .perform();
 
+    }
+
+    private String getTitle(String errorMessage) {
+        return waitForElementAndGetAttribute(By.id("org.wikipedia:id/view_page_title_text"),
+                "text", errorMessage, 15);
+    }
+
+    private String waitForElementAndGetAttribute(By by, String attribute, String errorMessage, long timeoutInSeconds) {
+        WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
+        return element.getAttribute(attribute);
     }
 }
