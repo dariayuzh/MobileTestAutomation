@@ -141,9 +141,17 @@ public class AdvancedAndroidTest {
     }
 
     private void closeArticle(String articleName) {
-        waitForElementAndClick(By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "Cannot close the article with the name " + articleName,
-                15);
+        /*
+            Первая статья всегда корректно закрывается через waitForElementAndClick, а вторая статья - не всегда,
+            т.к. при ее закрытии appium иногда бесконечно зависает на waitForElementAndClick:
+            Finding '//*[@resource-id='org.wikipedia:id/page_toolbar']//*[@content-desc='Navigate up']' using 'XPATH' with the contextId: '' multiple: true.
+            После этой сточки никакого лога больше нет, тест тоже зависает. Thread.sleep() перед waitForElementAndClick тоже не помог.
+            Сделано возвращение на главный экран приложения через driver.navigate().back().
+        */
+        driver.navigate().back();
+//        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_toolbar']//*[@content-desc='Navigate up']"),
+//                "Cannot close the article with the name " + articleName,
+//                15);
     }
 
     private void openArticlesList(String listName) {
