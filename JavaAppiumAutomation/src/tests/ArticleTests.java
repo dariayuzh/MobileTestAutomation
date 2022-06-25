@@ -7,6 +7,20 @@ import org.junit.Test;
 
 public class ArticleTests extends CoreTestCase {
     @Test
+    public void testAssertTitle() {
+        // ex6
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("olympic games");
+        searchPageObject.clickArticleWithSubstring("Major international sport event");
+
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        // changed initial test: now we are waiting for the title to appear
+        String title = articlePageObject.getArticleTitle();
+        assertNotNull("Title does not exist on the page!", title);
+    }
+
+    @Test
     public void testCompareArticleTitle() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();

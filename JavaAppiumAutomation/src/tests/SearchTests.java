@@ -6,6 +6,21 @@ import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
     @Test
+    public void testFindArticlesAndCancelSearch() {
+        // ex 3
+        String searchLine = "Summer";
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine(searchLine);
+        int searchResultAmount = searchPageObject.getAmountOfFoundArticles();
+        assertTrue("Cannot find several articles by word " + searchLine, searchResultAmount > 1);
+
+        searchPageObject.clickCancelSearch();
+        searchPageObject.assertEmptyResultOfSearch();
+    }
+
+    @Test
     public void testSearch() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();

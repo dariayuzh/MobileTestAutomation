@@ -20,7 +20,7 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject articlePageObject = new ArticlePageObject(driver);
         articlePageObject.waitForElementTitle();
         String articleTitle = articlePageObject.getArticleTitle();
-        articlePageObject.addArticleToMyList(folderName);
+        articlePageObject.addArticleToNewList(folderName);
         articlePageObject.closeArticle();
 
         NavigationUI navigationUI = new NavigationUI(driver);
@@ -29,5 +29,40 @@ public class MyListsTests extends CoreTestCase {
         MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
         myListsPageObject.openFolderByName(folderName);
         myListsPageObject.swipeByArticleToDelete(articleTitle);
+    }
+
+    @Test
+    public void testSaveTwoArticlesToList() {
+        // ex 5
+        String folderName = "Programming languages";
+
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        NavigationUI navigationUI = new NavigationUI(driver);
+        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
+
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickArticleWithSubstring("Object-oriented programming language");
+
+        String articleToDeleteTitle = articlePageObject.getArticleTitle();
+        articlePageObject.addArticleToNewList(folderName);
+        articlePageObject.closeArticle();
+
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Python");
+        searchPageObject.clickArticleWithSubstring("General-purpose programming language");
+
+        String articleToSaveTitle = articlePageObject.getArticleTitle();
+        articlePageObject.addArticleToExistedList(folderName);
+        articlePageObject.closeArticle();
+
+        navigationUI.clickMyLists();
+
+        myListsPageObject.openFolderByName(folderName);
+        myListsPageObject.swipeByArticleToDelete(articleToDeleteTitle);
+        myListsPageObject.clickArticleInList(articleToSaveTitle);
+        String articleInListTitle = articlePageObject.getArticleTitle();
+        assertEquals("Title of saved article changed!", articleToSaveTitle, articleInListTitle);
     }
 }
