@@ -40,23 +40,6 @@ public class AdvancedAndroidTest {
         driver.quit();
     }
 
-    @Test
-    public void changeScreenOrientation() {
-        String searchLine = "Java";
-        String description = "Object-oriented programming language";
-
-        searchByWord(searchLine);
-        clickArticle(description);
-
-        String titleBeforeRotation = getTitle("Cannot find article title before rotation, orientation is portrait");
-        driver.rotate(ScreenOrientation.LANDSCAPE);
-        String titleAfterRotation = getTitle("Cannot find article title after 1st rotation, orientation is landscape");
-        Assert.assertEquals("Title changed after 1st rotation!", titleAfterRotation, titleBeforeRotation);
-
-        driver.rotate(ScreenOrientation.PORTRAIT);
-        String titleAfterSecondRotation = getTitle("Cannot find article title after 2nd rotation, orientation is portrait");
-        Assert.assertEquals("Title changed after 2nd rotation!", titleAfterRotation, titleAfterSecondRotation);
-    }
 
     String articlesListName = "Programming languages";
     String firstArticleName = "Java (programming language)";
@@ -141,17 +124,9 @@ public class AdvancedAndroidTest {
     }
 
     private void closeArticle(String articleName) {
-        /*
-            Первая статья всегда корректно закрывается через waitForElementAndClick, а вторая статья - не всегда,
-            т.к. при ее закрытии appium иногда бесконечно зависает на waitForElementAndClick:
-            Finding '//*[@resource-id='org.wikipedia:id/page_toolbar']//*[@content-desc='Navigate up']' using 'XPATH' with the contextId: '' multiple: true.
-            После этой сточки никакого лога больше нет, тест тоже зависает. Thread.sleep() перед waitForElementAndClick тоже не помог.
-            Сделано возвращение на главный экран приложения через driver.navigate().back().
-        */
-        driver.navigate().back();
-//        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_toolbar']//*[@content-desc='Navigate up']"),
-//                "Cannot close the article with the name " + articleName,
-//                15);
+        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_toolbar']//*[@content-desc='Navigate up']"),
+                "Cannot close the article with the name " + articleName,
+                15);
     }
 
     private void openArticlesList(String listName) {
