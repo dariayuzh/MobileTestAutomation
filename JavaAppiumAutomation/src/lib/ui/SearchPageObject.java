@@ -8,7 +8,8 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_INIT_ELEMENT = "//*[contains(@text, 'Search Wikipedia')]",
             SEARCH_INPUT = "//*[contains(@text, 'Search…')]",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
+            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{TITLE}']",
+            SEARCH_RESULT_BY_SUBSTRING_TITLE_AND_DESC_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']/*[android.widget.TextView[@text='{TITLE}'] and android.widget.TextView[@text='{DESCRIPTION}']]",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
             SEARCH_EMPTY_RESULT_LABEL = "//*[@text='No results found']";
 
@@ -17,8 +18,12 @@ public class SearchPageObject extends MainPageObject {
     }
 
     /* TEMPLATES METHODS */
-    private static String getResultSearchElement(String substring) {
-        return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    private static String getResultSearchElement(String title) {
+        return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{TITLE}", title);
+    }
+
+    private static String getResultSearchElement(String title, String description) {
+        return SEARCH_RESULT_BY_SUBSTRING_TITLE_AND_DESC_TPL.replace("{TITLE}", title).replace("{DESCRIPTION}", description);
     }
     /* TEMPLATES METHODS */
 
@@ -69,6 +74,11 @@ public class SearchPageObject extends MainPageObject {
     public void assertEmptyResultOfSearch() {
         assertElementNotPresent(By.xpath(SEARCH_RESULT_ELEMENT),
                 "Some elements were found by request!");
+    }
+
+    public void waitForElementByTitleAndDescription(String title, String description) {
+        String searchResultXpath = getResultSearchElement(title, description);
+        waitForElementPresent(By.xpath(searchResultXpath), "Cannot find search result with title " + title + " and description " + description);
     }
 
 

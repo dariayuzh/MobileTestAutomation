@@ -4,6 +4,9 @@ import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SearchTests extends CoreTestCase {
     @Test
     public void testFindArticlesAndCancelSearch() {
@@ -55,5 +58,21 @@ public class SearchTests extends CoreTestCase {
         searchPageObject.typeSearchLine(searchLine);
         searchPageObject.waitForEmptyResultsLabel();
         searchPageObject.assertEmptyResultOfSearch();
+    }
+
+    @Test
+    public void testCheckTitleAndDescription() {
+        String searchLine = "Apricot";
+        HashMap<String, String> titleAndDescriptions = new HashMap<>();
+        titleAndDescriptions.put("Apricot", "Cultivated fruit");
+        titleAndDescriptions.put("Apricot Computers", "Known as Applied Computer Techniques until 1985, a computer services company");
+        titleAndDescriptions.put("Apricot kernel", "Seed of an apricot fruit");
+
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine(searchLine);
+        for (Map.Entry<String, String> map : titleAndDescriptions.entrySet()) {
+            searchPageObject.waitForElementByTitleAndDescription(map.getKey(), map.getValue());
+        }
     }
 }
