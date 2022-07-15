@@ -1,12 +1,11 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 public class MyListsPageObject extends MainPageObject {
     public static final String
-            FOLDER_BY_NAME_TPL = "//*[@text='{FOLDERNAME}']",
-            ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
+            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDERNAME}']",
+            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
 
     public MyListsPageObject(AppiumDriver driver) {
         super(driver);
@@ -20,39 +19,39 @@ public class MyListsPageObject extends MainPageObject {
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", articleTitle);
     }
 
-    public void openFolderByName(String folderName) {
+    public void openFolderByName(String folderName) throws Exception {
         String folderNameXpath = getFolderXpathByName(folderName);
         System.out.println("folderNameXpath " + folderNameXpath);
-        waitForElementAndClick(By.xpath(folderNameXpath),
+        waitForElementAndClick(folderNameXpath,
                 "Cannot find folder with name " + folderName,
                 10);
     }
 
-    public void swipeByArticleToDelete(String articleTitle) {
+    public void swipeByArticleToDelete(String articleTitle) throws Exception {
         waitArticleToAppearByTitle(articleTitle);
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
-        swipeElementToLeft(By.xpath(articleTitleXpath),
+        swipeElementToLeft(articleTitleXpath,
                 "Cannot find saved article with title " + articleTitle);
         waitArticleToDisappearByTitle(articleTitle);
     }
 
-    public void waitArticleToAppearByTitle(String articleTitle) {
+    public void waitArticleToAppearByTitle(String articleTitle) throws Exception {
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
-        waitForElementPresent(By.xpath(articleTitleXpath),
+        waitForElementPresent(articleTitleXpath,
                 "Cannot find saved article by title " + articleTitle,
                 15);
     }
 
-    public void waitArticleToDisappearByTitle(String articleTitle) {
+    public void waitArticleToDisappearByTitle(String articleTitle) throws Exception {
         String articleTitleXpath = getSavedArticleXpathByTitle(getFolderXpathByName(articleTitle));
-        waitForElementNotPresent(By.xpath(articleTitleXpath),
+        waitForElementNotPresent(articleTitleXpath,
                 "Saved article with the title " + articleTitle + " is not deleted from folder",
                 15);
     }
 
-    public void clickArticleInList(String articleTitle) {
+    public void clickArticleInList(String articleTitle) throws Exception {
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
-        waitForElementAndClick(By.xpath(articleTitleXpath),
+        waitForElementAndClick(articleTitleXpath,
                 "Cannot find and click saved article with the title " + articleTitle,
                 5);
     }
