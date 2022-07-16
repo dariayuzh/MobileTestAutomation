@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
     @Test
-    public void testSaveFirstArticleToMyList() throws Exception {
+    public void testSaveFirstArticleToMyList() {
         String folderName = "Learning programming";
 
         SearchPageObject searchPageObject = new SearchPageObject(driver);
@@ -32,7 +32,7 @@ public class MyListsTests extends CoreTestCase {
     }
 
     @Test
-    public void testSaveTwoArticlesToList() throws Exception {
+    public void testSaveTwoArticlesToList() {
         // ex 5
         String folderName = "Programming languages";
 

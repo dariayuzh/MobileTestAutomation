@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class SearchTests extends CoreTestCase {
     @Test
-    public void testFindArticlesAndCancelSearch() throws Exception {
+    public void testFindArticlesAndCancelSearch() {
         // ex 3
         String searchLine = "Summer";
         SearchPageObject searchPageObject = new SearchPageObject(driver);
@@ -24,7 +24,7 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
-    public void testSearch() throws Exception {
+    public void testSearch() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -32,7 +32,7 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
-    public void testCancelSearch() throws Exception {
+    public void testCancelSearch() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();
         searchPageObject.waitForCancelButtonToAppear();
@@ -41,7 +41,7 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
-    public void testAmountOfNotEmptySearch() throws Exception {
+    public void testAmountOfNotEmptySearch() {
         String searchLine = "Linkin park discography";
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();
@@ -51,7 +51,7 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
-    public void testAmountOfEmptySearch() throws Exception {
+    public void testAmountOfEmptySearch() {
         String searchLine = "aszgfdhffggdf";
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();
@@ -61,7 +61,7 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
-    public void testCheckTitleAndDescription() throws Exception {
+    public void testCheckTitleAndDescription() {
         String searchLine = "Apricot";
         HashMap<String, String> titleAndDescriptions = new HashMap<>();
         titleAndDescriptions.put("Apricot", "Cultivated fruit");

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class ChangeAppConditionsTests extends CoreTestCase {
     @Test
-    public void testChangeScreenOrientation() throws Exception {
+    public void testChangeScreenOrientation() {
         String searchLine = "Java";
         SearchPageObject searchPageObject = new SearchPageObject(driver);
 
@@ -27,7 +27,7 @@ public class ChangeAppConditionsTests extends CoreTestCase {
     }
 
     @Test
-    public void testCheckSearchArticleInBackground() throws Exception {
+    public void testCheckSearchArticleInBackground() {
         String searchLine = "Java";
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();

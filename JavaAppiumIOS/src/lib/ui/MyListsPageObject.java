@@ -19,7 +19,7 @@ public class MyListsPageObject extends MainPageObject {
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", articleTitle);
     }
 
-    public void openFolderByName(String folderName) throws Exception {
+    public void openFolderByName(String folderName) {
         String folderNameXpath = getFolderXpathByName(folderName);
         System.out.println("folderNameXpath " + folderNameXpath);
         waitForElementAndClick(folderNameXpath,
@@ -27,7 +27,7 @@ public class MyListsPageObject extends MainPageObject {
                 10);
     }
 
-    public void swipeByArticleToDelete(String articleTitle) throws Exception {
+    public void swipeByArticleToDelete(String articleTitle) {
         waitArticleToAppearByTitle(articleTitle);
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
         swipeElementToLeft(articleTitleXpath,
@@ -35,21 +35,21 @@ public class MyListsPageObject extends MainPageObject {
         waitArticleToDisappearByTitle(articleTitle);
     }
 
-    public void waitArticleToAppearByTitle(String articleTitle) throws Exception {
+    public void waitArticleToAppearByTitle(String articleTitle) {
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
         waitForElementPresent(articleTitleXpath,
                 "Cannot find saved article by title " + articleTitle,
                 15);
     }
 
-    public void waitArticleToDisappearByTitle(String articleTitle) throws Exception {
+    public void waitArticleToDisappearByTitle(String articleTitle) {
         String articleTitleXpath = getSavedArticleXpathByTitle(getFolderXpathByName(articleTitle));
         waitForElementNotPresent(articleTitleXpath,
                 "Saved article with the title " + articleTitle + " is not deleted from folder",
                 15);
     }
 
-    public void clickArticleInList(String articleTitle) throws Exception {
+    public void clickArticleInList(String articleTitle) {
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
         waitForElementAndClick(articleTitleXpath,
                 "Cannot find and click saved article with the title " + articleTitle,

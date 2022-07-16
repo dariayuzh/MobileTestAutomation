@@ -15,27 +15,27 @@ public class WelcomePageObject extends MainPageObject {
         super(driver);
     }
 
-    public void waitForLearnMoreLink() throws Exception {
+    public void waitForLearnMoreLink() {
         waitForElementPresent(STEP_LEARN_MORE_LINK, "Cannot find 'Learn more about wikipedia' link", 10);
     }
 
-    public void waitForNewWaysToExploreText() throws Exception {
+    public void waitForNewWaysToExploreText() {
         waitForElementPresent(STEP_NEW_WAYS_TO_EXPLORE_TEXT, "Cannot find 'New ways to explore' link", 10);
     }
 
-    public void waitForAddOrEditPreferredLangText() throws Exception {
+    public void waitForAddOrEditPreferredLangText() {
         waitForElementPresent(STEP_ADD_OR_EDIT_PREFERRED_LANG_LINK, "Cannot find 'Add or edit preferred languages' link", 10);
     }
 
-    public void waitForLearnMoreAboutDataCollectedText() throws Exception {
+    public void waitForLearnMoreAboutDataCollectedText() {
         waitForElementPresent(STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK, "Cannot find 'Learn more about data collected' link", 10);
     }
 
-    public void clickNextButton() throws Exception {
+    public void clickNextButton() {
         waitForElementAndClick(NEXT_BUTTON, "Cannot find and click 'Next' button", 10);
     }
 
-    public void clickGetStartedButton() throws Exception {
+    public void clickGetStartedButton() {
         waitForElementAndClick(GET_STARTED_BUTTON, "Cannot find and click 'Get started' button", 10);
     }
 }
