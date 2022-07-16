@@ -126,7 +126,7 @@ public class MainPageObject {
         }
     }
 
-    private By getLocatorByString(String locatorWithType) throws Exception {
+    private By getLocatorByString(String locatorWithType) {
         String[] explodedLocator = locatorWithType.split(Pattern.quote(":"), 2);
         String byType = explodedLocator[0];
         String locator = explodedLocator[1];
@@ -136,7 +136,7 @@ public class MainPageObject {
         } else if (byType.equals("id")) {
             return By.id(locator);
         } else {
-            throw new IllegalAccessException("Cannot get type of locator. Locator = " + byType);
+            throw new IllegalArgumentException("Cannot get type of locator. Locator = " + byType);
         }
     }
 
