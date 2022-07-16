@@ -1,9 +1,13 @@
 package lib.ui;
 
+import org.junit.Assert;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import lib.Platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -44,7 +48,7 @@ public class MainPageObject {
 
     public WebElement waitForElementPresent(String locator, String errorMessage, long timeoutInSeconds) {
         By by = getLocatorByString(locator);
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
         wait.withMessage(errorMessage + "\n");
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
@@ -67,7 +71,7 @@ public class MainPageObject {
 
     public boolean waitForElementNotPresent(String locator, String errorMessage, long timeoutInSeconds) {
         By by = getLocatorByString(locator);
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
         wait.withMessage(errorMessage + "\n");
         return wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
     }
@@ -79,7 +83,15 @@ public class MainPageObject {
     }
 
     public void swipeUp(int timeOfSwipe) {
-        TouchAction action = new TouchAction(driver);
+        TouchAction action;
+        if (Platform.getInstance().isAndroid()){
+            AndroidDriver androidDriver = (AndroidDriver) driver;
+            action = new TouchAction(androidDriver);
+        }
+        else {
+            IOSDriver iosDriver = (IOSDriver) driver;
+            action = new TouchAction(iosDriver);
+        }
         Dimension size = driver.manage().window().getSize();
         int x = size.width / 2;
         int startY = (int) (size.height * 0.8);
@@ -93,13 +105,21 @@ public class MainPageObject {
     }
 
     public void swipeElementToLeft(String locator, String errorMessage) {
+        TouchAction action;
+        if (Platform.getInstance().isAndroid()){
+            AndroidDriver androidDriver = (AndroidDriver) driver;
+            action = new TouchAction(androidDriver);
+        }
+        else {
+            IOSDriver iosDriver = (IOSDriver) driver;
+            action = new TouchAction(iosDriver);
+        }
         WebElement element = waitForElementPresent(locator, errorMessage, 10);
         int leftX = element.getLocation().getX();
         int rightX = leftX + element.getSize().getWidth();
         int upperY = element.getLocation().getY();
         int lowerY = upperY + element.getSize().getHeight();
         int middleY = (upperY + lowerY) / 2;
-        TouchAction action = new TouchAction(driver);
         action
                 .press(PointOption.point(rightX, middleY))
                 .waitAction(WaitOptions.waitOptions(Duration.ofMillis(150)))
@@ -124,6 +144,26 @@ public class MainPageObject {
             swipeUpQuick();
             alreadySwiped++;
         }
+    }
+
+    public void swipeUpTillElementAppear(String locator, String errorMessage, int maxSwipes) {
+        By by = getLocatorByString(locator);
+        int alreadySwiped = 0;
+        while (!isElementLocatedOnScreen(locator)) {
+            if (alreadySwiped > maxSwipes) {
+                Assert.assertTrue(errorMessage, isElementLocatedOnScreen(locator));
+            }
+            swipeUpQuick();
+            alreadySwiped++;
+        }
+
+    }
+
+    public boolean isElementLocatedOnScreen(String locator) {
+        int elementLocationY = waitForElementPresent(locator, "Cannot find element by locator",
+                5).getLocation().getY();
+        int screenSizeByY = driver.manage().window().getSize().getHeight();
+        return elementLocationY < screenSizeByY;
     }
 
     private By getLocatorByString(String locatorWithType) {

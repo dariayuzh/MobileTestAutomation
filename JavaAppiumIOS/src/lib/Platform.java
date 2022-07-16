@@ -29,7 +29,7 @@ public class Platform {
         if (isAndroid()) {
             return new AndroidDriver(url, getAndroidDesiredCapabilities());
         } else if (isIOS()) {
-            return new IOSDriver(url, getAndroidDesiredCapabilities());
+            return new IOSDriver(url, getIOSDesiredCapabilities());
         }
         else {
             throw new Exception("Cannot detect type of driver. Platform value: " + getPlatformVar());
@@ -68,9 +68,9 @@ public class Platform {
     private DesiredCapabilities getIOSDesiredCapabilities() {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "iOS");
-        capabilities.setCapability("deviceName", "iPhone SE");
-        capabilities.setCapability("platformVersion", "11.3");
-        capabilities.setCapability("app", "D:/MyProjects/JavaAppiumAutomation/apks/Wikipedia.app");
+        capabilities.setCapability("deviceName", "iPhone 13");
+        capabilities.setCapability("platformVersion", "15.5");
+        capabilities.setCapability("app", "/Users/ilyabogdanov/projects/MobileTestAutomation/JavaAppiumIOS/apks/Wikipedia.app");
         return capabilities;
     }
 }
