@@ -24,20 +24,20 @@ public class ArticlePageObject extends MainPageObject {
         return EXISTED_LIST_TITLE_TPL.replace("{LIST_NAME}", folderName);
     }
 
-    public WebElement waitForElementTitle() throws Exception {
+    public WebElement waitForElementTitle() {
         return waitForElementPresent(TITLE, "Cannot find article title on the page!", 20);
     }
 
-    public String getArticleTitle() throws Exception {
+    public String getArticleTitle() {
         WebElement title = waitForElementTitle();
         return title.getAttribute("text");
     }
 
-    public void swipeToFooter() throws Exception {
+    public void swipeToFooter() {
         swipeUpToFindElement(FOOTER_ELEMENT, "Cannot find the end of the article!", 20);
     }
 
-    public void addArticleToNewList(String folderName) throws Exception {
+    public void addArticleToNewList(String folderName) {
         waitForElementAndClick(OPTIONS_BUTTON,
                 "Cannot find More options button",
                 5);
@@ -59,7 +59,7 @@ public class ArticlePageObject extends MainPageObject {
                 5);
     }
 
-    public void addArticleToExistedList(String folderName) throws Exception {
+    public void addArticleToExistedList(String folderName) {
         waitForElementAndClick(OPTIONS_BUTTON,
                 "Cannot find More options button",
                 5);
@@ -72,7 +72,7 @@ public class ArticlePageObject extends MainPageObject {
                 10);
     }
 
-    public void closeArticle() throws Exception {
+    public void closeArticle() {
         waitForElementAndClick(CLOSE_ARTICLE_BUTTON,
                 "Cannot close the article",
                 5);

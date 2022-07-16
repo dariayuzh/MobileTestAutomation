@@ -10,7 +10,7 @@ public class NavigationUI extends MainPageObject {
         super(driver);
     }
 
-    public void clickMyLists() throws Exception {
+    public void clickMyLists() {
         waitForElementAndClick(MY_LISTS_LINK,
                 "Cannot open lists of articles",
                 5);

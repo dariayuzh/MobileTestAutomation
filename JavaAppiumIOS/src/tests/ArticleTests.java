@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class ArticleTests extends CoreTestCase {
     @Test
-    public void testAssertTitle() throws Exception {
+    public void testAssertTitle() {
         // ex6
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();
@@ -21,7 +21,7 @@ public class ArticleTests extends CoreTestCase {
     }
 
     @Test
-    public void testCompareArticleTitle() throws Exception {
+    public void testCompareArticleTitle() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -37,7 +37,7 @@ public class ArticleTests extends CoreTestCase {
     }
 
     @Test
-    public void testSwipeArticle() throws Exception {
+    public void testSwipeArticle() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Appium");
