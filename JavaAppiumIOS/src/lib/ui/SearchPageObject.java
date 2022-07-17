@@ -27,7 +27,7 @@ public abstract class SearchPageObject extends MainPageObject {
     /* TEMPLATES METHODS */
 
     public void initSearchInput() {
-        waitForElementPresent(SEARCH_INIT_ELEMENT, "Cannot find search input after clicking search init element");
+        waitForElementPresent(SEARCH_INIT_ELEMENT, "Cannot find search input after clicking search init element", 10);
         waitForElementAndClick(SEARCH_INIT_ELEMENT, "Cannot find and click search init element", 5);
     }
 

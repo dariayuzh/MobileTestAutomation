@@ -47,6 +47,11 @@ public abstract class ArticlePageObject extends MainPageObject {
         }
     }
 
+    public void waitForFooterAppear() {
+        waitForElementPresent(FOOTER_ELEMENT, "Cannot find the footer of the article - article is not opened!",
+                10);
+    }
+
     public void addArticleToMySaved() {
         waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find button to add article to saved list", 10);
     }

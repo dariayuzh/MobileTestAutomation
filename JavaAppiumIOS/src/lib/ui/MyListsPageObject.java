@@ -8,7 +8,8 @@ public abstract class MyListsPageObject extends MainPageObject {
             FOLDER_BY_NAME_TPL,
             CLOSE_SYNC_SUGGESTION,
             DELETE_ARTICLE_FROM_LIST_BUTTON,
-            ARTICLE_BY_TITLE_TPL;
+            ARTICLE_BY_TITLE_TPL,
+            AMOUNT_OF_ARTICLES_IN_LIST;
 
     public MyListsPageObject(AppiumDriver driver) {
         super(driver);
@@ -20,6 +21,10 @@ public abstract class MyListsPageObject extends MainPageObject {
 
     public static String getSavedArticleXpathByTitle(String articleTitle) {
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", articleTitle);
+    }
+
+    public int getAmountOfArticlesInList() {
+        return getAmountOfElements(AMOUNT_OF_ARTICLES_IN_LIST);
     }
 
     public void openFolderByName(String folderName) {
