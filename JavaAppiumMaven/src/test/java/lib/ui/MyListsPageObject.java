@@ -10,6 +10,7 @@ public abstract class MyListsPageObject extends MainPageObject {
             CLOSE_SYNC_SUGGESTION,
             DELETE_ARTICLE_FROM_LIST_BUTTON,
             REMOVE_FROM_SAVED_BUTTON,
+            REMOVE_FROM_SAVED_BUTTON_GENERAL,
             ARTICLE_BY_TITLE_TPL,
             AMOUNT_OF_ARTICLES_IN_LIST;
 
@@ -53,6 +54,13 @@ public abstract class MyListsPageObject extends MainPageObject {
                 10);
     }
 
+    public void swipeByArticleToDelete() {
+        if (Platform.getInstance().isMobileWeb()) {
+            waitForElementAndClick(REMOVE_FROM_SAVED_BUTTON_GENERAL, "Cannot click button to remove article from saved", 5);
+            driver.navigate().refresh();
+        }
+    }
+
     public void swipeByArticleToDelete(String articleTitle) {
         waitArticleToAppearByTitle(articleTitle);
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
@@ -67,6 +75,7 @@ public abstract class MyListsPageObject extends MainPageObject {
         } else {
             String removeLocator = getRemoveButtonByTitle(articleTitle);
             waitForElementAndClick(removeLocator, "Cannot click button to remove article from saved", 5);
+            driver.navigate().refresh();
             driver.navigate().refresh();
         }
 

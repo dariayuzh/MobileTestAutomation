@@ -82,6 +82,13 @@ public class MainPageObject {
         return wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
+    public WebElement waitForElementToBeVisible(String locator, String errorMessage, long timeoutInSeconds) {
+        By by = getLocatorByString(locator);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+        wait.withMessage(errorMessage + "\n");
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+    }
+
     public WebElement waitForElementPresent(String locator, String errorMessage) {
         return waitForElementPresent(locator, errorMessage, 5);
     }

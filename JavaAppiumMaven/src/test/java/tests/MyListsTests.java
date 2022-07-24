@@ -15,6 +15,19 @@ public class MyListsTests extends CoreTestCase {
             login = "Daria Yuzh",
             password = "P6jWfRuhVSswpqD";
 
+    @Override
+    protected void tearDown() throws Exception {
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        MyListsPageObject myListsPageObject = MyListPageObjectFactory.get(driver);
+        navigationUI.openNavigation();
+        navigationUI.clickMyLists();
+        int amountOfSavedArticles = myListsPageObject.getAmountOfArticlesInList();
+        for (int i = 0; i < amountOfSavedArticles; i++) {
+            myListsPageObject.swipeByArticleToDelete();
+        }
+        super.tearDown();
+    }
+
 
     @Test
     public void testSaveFirstArticleToMyList() {
@@ -62,8 +75,8 @@ public class MyListsTests extends CoreTestCase {
     }
 
     @Test
-    public void testSaveTwoArticlesToList() throws InterruptedException {
-        // ex 5, 11
+    public void testSaveTwoArticlesToList() {
+        // ex 5, 11, 17
         String folderName = "Programming languages";
 
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
@@ -75,40 +88,43 @@ public class MyListsTests extends CoreTestCase {
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickArticleWithSubstring("Object-oriented programming language");
 
-        if (Platform.getInstance().isAndroid()) {
+        articlePageObject.waitForArticleIsOpened();
+        String firstArticleName = articlePageObject.getArticleTitle();
+        articlePageObject.addArticleToNewList(folderName);
+
+        if (Platform.getInstance().isMobileWeb()) {
+            AuthorizationPageObject authPageObject = new AuthorizationPageObject(driver);
+            authPageObject.clickAuthButton();
+            authPageObject.enterLoginData(login, password);
+            authPageObject.submitForm();
+
             articlePageObject.waitForElementTitle();
-            articlePageObject.addArticleToNewList(folderName);
-        } else {
-            articlePageObject.waitForFooterAppear();
-            articlePageObject.addArticleToMySaved();
+
+            assertEquals("We are not on the same page after login", firstArticleName, articlePageObject.getArticleTitle());
         }
+
         articlePageObject.closeArticle();
         if (Platform.getInstance().isIOS()) {
             searchPageObject.clickCancelSearch();
         }
 
-        Thread.sleep(1000);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Python");
         searchPageObject.clickArticleWithSubstring("General-purpose programming language");
 
+        articlePageObject.waitForArticleIsOpened();
+        articlePageObject.addArticleToExistedList(folderName);
 
-        if (Platform.getInstance().isAndroid()) {
-            articlePageObject.waitForElementTitle();
-            articlePageObject.addArticleToExistedList(folderName);
-        } else {
-            articlePageObject.waitForFooterAppear();
-            articlePageObject.addArticleToMySaved();
-        }
         articlePageObject.closeArticle();
         if (Platform.getInstance().isIOS()) {
             searchPageObject.clickCancelSearch();
         }
 
+        navigationUI.openNavigation();
         navigationUI.clickMyLists();
         if (Platform.getInstance().isAndroid()) {
             myListsPageObject.openFolderByName(folderName);
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             myListsPageObject.closeSyncArticlesSuggestion();
         }
 
@@ -116,6 +132,7 @@ public class MyListsTests extends CoreTestCase {
         assertEquals("Expected amount of articles in list = 2, actual = " + amountOfArticles,
                 2, amountOfArticles);
         myListsPageObject.swipeByArticleToDelete("Python (programming language)");
+        navigationUI.waitForMyListPageIsOpened();
         amountOfArticles = myListsPageObject.getAmountOfArticlesInList();
         assertEquals("Expected amount of articles after deleting from list = 1, actual = " + amountOfArticles,
                 1, amountOfArticles);
