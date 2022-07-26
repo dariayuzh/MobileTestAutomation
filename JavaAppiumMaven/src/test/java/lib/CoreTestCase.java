@@ -1,31 +1,37 @@
 package lib;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
-import junit.framework.TestCase;
+import io.qameta.allure.Step;
 import lib.ui.WelcomePageObject;
+import org.junit.After;
+import org.junit.Before;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.FileOutputStream;
 import java.time.Duration;
+import java.util.Properties;
 
-public class CoreTestCase extends TestCase {
+public class CoreTestCase {
     protected RemoteWebDriver driver;
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    @Step("Run driver and session")
+    public void setUp() throws Exception {
         driver = Platform.getInstance().getDriver();
+        createAllurePropertyFile();
         rotateScreenPortrait();
         skipWelcomePageIOS();
         openWikiWebPage();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    @Step("Remove driver and session")
+    public void tearDown() {
         driver.quit();
     }
 
+    @Step("Rotate screen to portrait mode")
     protected void rotateScreenPortrait() {
         if (Platform.getInstance().isAndroid()) {
             AndroidDriver androidDriver = (AndroidDriver) driver;
@@ -39,6 +45,7 @@ public class CoreTestCase extends TestCase {
         }
     }
 
+    @Step("Rotate screen to landscape mode")
     protected void rotateScreenLanscape() {
         if (Platform.getInstance().isAndroid()) {
             AndroidDriver androidDriver = (AndroidDriver) driver;
@@ -52,6 +59,7 @@ public class CoreTestCase extends TestCase {
         }
     }
 
+    @Step("Send mobile app to background (does not work on mobile web)")
     protected void backgroundApp(int seconds) {
         if (Platform.getInstance().isAndroid()) {
             AndroidDriver androidDriver = (AndroidDriver) driver;
@@ -62,6 +70,7 @@ public class CoreTestCase extends TestCase {
         }
     }
 
+    @Step("Skip welcome screen for iOS")
     private void skipWelcomePageIOS() {
         if (Platform.getInstance().isIOS()) {
             IOSDriver iosDriver = (IOSDriver) driver;
@@ -70,12 +79,28 @@ public class CoreTestCase extends TestCase {
         }
     }
 
+    @Step("Open Wikipedia URL for Mobile Web (does not work on Android and iOS")
     protected void openWikiWebPage() {
         if (Platform.getInstance().isMobileWeb()) {
             driver.get("https://en.m.wikipedia.org");
         }
         else {
             System.out.println("Method openWikiWebPage does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
+    }
+
+    private void createAllurePropertyFile() {
+        String path = System.getProperty("allure.results.directory");
+        try {
+            Properties properties = new Properties();
+            FileOutputStream fileOutputStream = new FileOutputStream(path + "/environment.properties");
+            properties.setProperty("environment", Platform.getInstance().getPlatformVar());
+            properties.store(fileOutputStream, "See https://github.com/allure-framework/allure-app/wiki/Environment");
+            fileOutputStream.close();
+        }
+        catch (Exception e) {
+            System.err.println("IO problem while writing allure properties file");
+            e.printStackTrace();
         }
     }
 }

@@ -7,7 +7,10 @@ import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
+import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class MyListsTests extends CoreTestCase {
     private static final String folderName = "Learning programming";
@@ -15,8 +18,8 @@ public class MyListsTests extends CoreTestCase {
             login = "Daria Yuzh",
             password = "P6jWfRuhVSswpqD";
 
-    @Override
-    protected void tearDown() throws Exception {
+    @Before
+    public void tearDown() {
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         MyListsPageObject myListsPageObject = MyListPageObjectFactory.get(driver);
         navigationUI.openNavigation();
