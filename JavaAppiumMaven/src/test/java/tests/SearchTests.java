@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.SearchPageObjectFactory;
@@ -10,8 +12,14 @@ import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
+@Epic("Tests for searching")
 public class SearchTests extends CoreTestCase {
     @Test
+    @Feature(value = "Search")
+    @DisplayName("Find several articles by search word 'Summer' and cancel it")
+    @Description("Find several articles by search word 'Summer' and cancel it")
+    @Step("Starting test testFindArticlesAndCancelSearch")
+    @Severity(value = SeverityLevel.BLOCKER)
     public void testFindArticlesAndCancelSearch() {
         // ex 3
         String searchLine = "Summer";
@@ -27,6 +35,11 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
+    @Feature(value = "Search")
+    @DisplayName("Find search results by search word 'Java'")
+    @Description("Find articles by word 'Java' and make sure expected article exists")
+    @Step("Starting test testSearch")
+    @Severity(value = SeverityLevel.BLOCKER)
     public void testSearch() {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
@@ -35,6 +48,11 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
+    @Feature(value = "Search")
+    @DisplayName("Click on search field and cancel it")
+    @Description("Click on search field and make sure to return back on he main page after cancelling search")
+    @Step("Starting test testCancelSearch")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testCancelSearch() {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
@@ -44,6 +62,11 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
+    @Feature(value = "Search")
+    @DisplayName("Check that search results exist")
+    @Description("Search by line 'Linkin park discography' and make sure search result is not empty")
+    @Step("Starting test testAmountOfNotEmptySearch")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testAmountOfNotEmptySearch() {
         String searchLine = "Linkin park discography";
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
@@ -54,6 +77,11 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
+    @Feature(value = "Search")
+    @DisplayName("Check that search result is empty")
+    @Description("Search by line 'aszgfdhffggdf' and make sure search result is empty")
+    @Step("Starting test testAmountOfEmptySearch")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testAmountOfEmptySearch() {
         String searchLine = "aszgfdhffggdf";
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
@@ -64,6 +92,11 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
+    @Feature(value = "Search")
+    @DisplayName("Check search results by title and description")
+    @Description("Search by line 'Apricot' and check search results by title and description")
+    @Step("Starting test testCheckTitleAndDescription")
+    @Severity(value = SeverityLevel.MINOR)
     public void testCheckTitleAndDescription() {
         String searchLine = "Apricot";
         HashMap<String, String> titleAndDescriptions = new HashMap<>();

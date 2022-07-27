@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -13,6 +14,7 @@ public abstract class NavigationUI extends MainPageObject {
         super(driver);
     }
 
+    @Step("Click on saved lists")
     public void clickMyLists() {
         if (Platform.getInstance().isMobileWeb()) {
             tryClickElementWithAttempts(MY_LISTS_LINK, "Cannot find and click open navigation button", 5);
@@ -23,14 +25,15 @@ public abstract class NavigationUI extends MainPageObject {
                     "Cannot open lists of articles",
                     5);
         }
+
     }
 
+    @Step("Wait for saved list to be opened")
     public void waitForMyListPageIsOpened() {
-        if (Platform.getInstance().isMobileWeb()) {
-            waitForElementToBeVisible(MY_LISTS_PAGE, "Cannot switch to my lists page", 5);
-        }
+        waitForElementToBeVisible(MY_LISTS_PAGE, "Cannot switch to my lists page", 5);
     }
 
+    @Step("Click navigation button (for Mobile Web)")
     public void openNavigation() {
         if (Platform.getInstance().isMobileWeb()) {
             waitForElementAndClick(OPEN_NAVIGATION, "Cannot find and click open navigation button", 5);

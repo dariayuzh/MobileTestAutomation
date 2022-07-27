@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
@@ -7,32 +9,41 @@ import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+@Epic("Tests for saving articles to list")
 public class MyListsTests extends CoreTestCase {
     private static final String folderName = "Learning programming";
     private static final String
             login = "Daria Yuzh",
             password = "P6jWfRuhVSswpqD";
 
-    @Before
+    @After
     public void tearDown() {
-        NavigationUI navigationUI = NavigationUIFactory.get(driver);
-        MyListsPageObject myListsPageObject = MyListPageObjectFactory.get(driver);
-        navigationUI.openNavigation();
-        navigationUI.clickMyLists();
-        int amountOfSavedArticles = myListsPageObject.getAmountOfArticlesInList();
-        for (int i = 0; i < amountOfSavedArticles; i++) {
-            myListsPageObject.swipeByArticleToDelete();
+        if (Platform.getInstance().isMobileWeb()) {
+            NavigationUI navigationUI = NavigationUIFactory.get(driver);
+            MyListsPageObject myListsPageObject = MyListPageObjectFactory.get(driver);
+            navigationUI.openNavigation();
+            navigationUI.clickMyLists();
+            int amountOfSavedArticles = myListsPageObject.getAmountOfArticlesInList();
+            for (int i = 0; i < amountOfSavedArticles; i++) {
+                myListsPageObject.swipeByArticleToDelete();
+            }
+            super.tearDown();
         }
-        super.tearDown();
     }
 
 
     @Test
+    @Features(value = {@Feature(value = "Search"), @Feature(value = "Article"), @Feature(value = "Saving")})
+    @DisplayName("Save one article to the list and remove")
+    @Description("Save article 'Java(Object-oriented programming language)' to list and remove from it")
+    @Step("Starting test testSaveFirstArticleToMyList")
+    @Severity(value = SeverityLevel.BLOCKER)
     public void testSaveFirstArticleToMyList() {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
@@ -78,6 +89,11 @@ public class MyListsTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value = {@Feature(value = "Search"), @Feature(value = "Article"), @Feature(value = "Saving")})
+    @DisplayName("Save two articles to the list and remove one of it")
+    @Description("Save article 'Java(Object-oriented programming language)' and 'Python(General-purpose programming language)' to list and remove from it")
+    @Step("Starting test testSaveTwoArticlesToList")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testSaveTwoArticlesToList() {
         // ex 5, 11, 17
         String folderName = "Programming languages";
@@ -127,6 +143,7 @@ public class MyListsTests extends CoreTestCase {
         navigationUI.clickMyLists();
         if (Platform.getInstance().isAndroid()) {
             myListsPageObject.openFolderByName(folderName);
+            navigationUI.waitForMyListPageIsOpened();
         } else if (Platform.getInstance().isIOS()) {
             myListsPageObject.closeSyncArticlesSuggestion();
         }

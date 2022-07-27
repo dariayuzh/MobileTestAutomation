@@ -17,12 +17,17 @@ import static org.junit.Assert.assertNotNull;
 @Epic("Tests for articles")
 public class ArticleTests extends CoreTestCase {
     @Test
+    @Features(value = {@Feature(value = "Search"), @Feature(value = "Article")})
+    @DisplayName("Assert article has expected title")
+    @Description("Open article 'Olympic Games' and make sure that title is expected")
+    @Step("Starting test testAssertTitle")
+    @Severity(value = SeverityLevel.BLOCKER)
     public void testAssertTitle() {
         // ex6
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("olympic games");
-        searchPageObject.clickArticleWithSubstring("Major international multi-sport event");
+        searchPageObject.clickArticleWithSubstring("Major international sport event");
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         // changed initial test: now we are waiting for the title to appear
@@ -53,15 +58,15 @@ public class ArticleTests extends CoreTestCase {
 
     @Test
     @Features(value = {@Feature(value = "Search"), @Feature(value = "Article")})
-    @DisplayName("Swipe artcile to the footer")
+    @DisplayName("Swipe article to the footer")
     @Description("Open article 'Java' and swipe to the footer")
     @Step("Starting test testSwipeArticle")
     @Severity(value = SeverityLevel.MINOR)
     public void testSwipeArticle() {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine("Java");
-        searchPageObject.clickArticleWithSubstring("Object-oriented programming language");
+        searchPageObject.typeSearchLine("Appium");
+        searchPageObject.clickArticleWithSubstring("Automation for Apps");
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForElementTitle();

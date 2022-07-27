@@ -28,6 +28,7 @@ public abstract class ArticlePageObject extends MainPageObject {
         return EXISTED_LIST_TITLE_TPL.replace("{LIST_NAME}", folderName);
     }
 
+    @Step("Wait for article to be opened by searching the title (Android & Web) or the footer (iOS)")
     public WebElement waitForArticleIsOpened() {
         if ((Platform.getInstance().isAndroid() || Platform.getInstance().isMobileWeb())) {
             return waitForElementTitle();
@@ -36,6 +37,7 @@ public abstract class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Wait for the article title to appear")
     public WebElement waitForElementTitle() {
         return waitForElementPresent(TITLE, "Cannot find article title on the page!", 20);
     }
@@ -53,6 +55,7 @@ public abstract class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Swipe article till footer appear")
     public void swipeToFooter() {
         if (Platform.getInstance().isAndroid()) {
             swipeUpToFindElement(FOOTER_ELEMENT, "Cannot find the end of the article!", 20);
@@ -63,11 +66,13 @@ public abstract class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Wait for article footer to appear")
     public WebElement waitForFooterAppear() {
         return waitForElementPresent(FOOTER_ELEMENT, "Cannot find the footer of the article - article is not opened!",
                 10);
     }
 
+    @Step("Add article to list")
     public void addArticleToMySaved() {
         if (Platform.getInstance().isMobileWeb()) {
             removeArticleFromSavedAndAddAgain();
@@ -76,6 +81,7 @@ public abstract class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Add article to newly created list")
     public void addArticleToNewList(String folderName) {
         if (Platform.getInstance().isAndroid()) {
             waitForElementAndClick(OPTIONS_BUTTON,
@@ -103,6 +109,7 @@ public abstract class ArticlePageObject extends MainPageObject {
 
     }
 
+    @Step("Remove article from list if and add again (for Mobile Web)")
     public void removeArticleFromSavedAndAddAgain() {
         if (isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)) {
             waitForElementAndClick(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON, "Cannot click button to remove article from saved", 5);
@@ -110,6 +117,7 @@ public abstract class ArticlePageObject extends MainPageObject {
         waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find button to add article to saved after removing", 5);
     }
 
+    @Step("Add article to existed list")
     public void addArticleToExistedList(String folderName) {
         if (Platform.getInstance().isAndroid()) {
             waitForElementAndClick(OPTIONS_BUTTON,
@@ -128,6 +136,7 @@ public abstract class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Close article")
     public void closeArticle() {
         if (Platform.getInstance().isAndroid() || Platform.getInstance().isIOS()) {
             waitForElementAndClick(CLOSE_ARTICLE_BUTTON,

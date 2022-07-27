@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -30,10 +31,12 @@ public abstract class MyListsPageObject extends MainPageObject {
         return REMOVE_FROM_SAVED_BUTTON.replace("{TITLE}", articleTitle);
     }
 
+    @Step("Get amount of articles in the list")
     public int getAmountOfArticlesInList() {
         return getAmountOfElements(AMOUNT_OF_ARTICLES_IN_LIST);
     }
 
+    @Step("Open folder with saved articles by name")
     public void openFolderByName(String folderName) {
         String folderNameXpath = getFolderXpathByName(folderName);
         System.out.println("folderNameXpath " + folderNameXpath);
@@ -42,18 +45,21 @@ public abstract class MyListsPageObject extends MainPageObject {
                 10);
     }
 
+    @Step("Close suggestion to sync articles (for iOS)")
     public void closeSyncArticlesSuggestion() {
         waitForElementAndClick(CLOSE_SYNC_SUGGESTION,
                 "Cannot close sync articles suggestion",
                 10);
     }
 
+    @Step("Click button to delete article from saved list")
     public void clickDeleteArticleFromListButton() {
         waitForElementAndClick(DELETE_ARTICLE_FROM_LIST_BUTTON,
                 "Cannot find delete article button",
                 10);
     }
 
+    @Step("Swipe article to delete from list")
     public void swipeByArticleToDelete() {
         if (Platform.getInstance().isMobileWeb()) {
             waitForElementAndClick(REMOVE_FROM_SAVED_BUTTON_GENERAL, "Cannot click button to remove article from saved", 5);
@@ -61,6 +67,7 @@ public abstract class MyListsPageObject extends MainPageObject {
         }
     }
 
+    @Step("Swipe article to delete from list by name")
     public void swipeByArticleToDelete(String articleTitle) {
         waitArticleToAppearByTitle(articleTitle);
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
@@ -83,6 +90,7 @@ public abstract class MyListsPageObject extends MainPageObject {
 
     }
 
+    @Step("Wait for article appear in the list")
     public void waitArticleToAppearByTitle(String articleTitle) {
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
         waitForElementPresent(articleTitleXpath,
@@ -90,6 +98,7 @@ public abstract class MyListsPageObject extends MainPageObject {
                 15);
     }
 
+    @Step("Wait for article to disappear from the list")
     public void waitArticleToDisappearByTitle(String articleTitle) {
         String articleTitleXpath = getSavedArticleXpathByTitle(getSavedArticleXpathByTitle(articleTitle));
         waitForElementNotPresent(articleTitleXpath,
@@ -97,6 +106,7 @@ public abstract class MyListsPageObject extends MainPageObject {
                 15);
     }
 
+    @Step("Click on article from the list")
     public void clickArticleInList(String articleTitle) {
         String articleTitleXpath = getSavedArticleXpathByTitle(articleTitle);
         waitForElementAndClick(articleTitleXpath,

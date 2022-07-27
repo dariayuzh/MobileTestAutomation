@@ -1,12 +1,7 @@
 package lib.ui;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import io.qameta.allure.Step;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class AuthorizationPageObject extends MainPageObject {
     private static final String
@@ -19,16 +14,19 @@ public class AuthorizationPageObject extends MainPageObject {
         super(driver);
     }
 
+    @Step("Click 'Log in' button")
     public void clickAuthButton() {
         waitForElementToBeClickable(LOGIN_BUTTON, "Cannot find auth button", 5);
         waitForElementAndClick(LOGIN_BUTTON, "Cannot click auth button", 5);
     }
 
+    @Step("Fill in authorization data")
     public void enterLoginData(String login, String password) {
         waitForElementAndSendKeys(LOGIN_INPUT, login,"Cannot send login into login input", 5);
         waitForElementAndSendKeys(PASSWORD_INPUT, password,"Cannot send password into login input", 5);
     }
 
+    @Step("Click submit button")
     public void submitForm() {
         waitForElementAndClick(SUBMIT_BUTTON, "Cannot find and click submit button", 5);
     }
